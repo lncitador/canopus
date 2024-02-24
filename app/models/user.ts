@@ -9,18 +9,24 @@ const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   passwordColumnName: 'password',
 })
 
+export const UserRole = ['admin', 'user', 'promoter'] as const
+export type UserRole = typeof UserRole[number]
+
 export default class User extends compose(BaseModel, AuthFinder) {
   @column({ isPrimary: true })
-  declare id: number
+  declare id: string
 
   @column()
-  declare fullName: string | null
+  declare name: string | null
 
   @column()
   declare email: string
 
   @column()
   declare password: string
+
+  @column()
+  declare role: UserRole
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
